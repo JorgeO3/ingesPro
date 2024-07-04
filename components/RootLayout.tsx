@@ -13,13 +13,16 @@ export const RootLayout = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <div
-      className={cn(
-        'bg-background font-sans antialiased flex h-screen',
-        inter.variable,
-      )}
-    >
-      {children}
-    </div>
+    <>
+      <title>IngesPro</title>
+      <main
+        className={cn(
+          'bg-background font-sans antialiased flex h-screen',
+          inter.variable,
+        )}
+      >
+        {children}
+      </main>
+    </>
   );
 };

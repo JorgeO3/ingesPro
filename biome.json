@@ -17,5 +17,8 @@
 		"formatter": {
 			"quoteStyle": "single"
 		}
-	}
+	},
+  "files": {
+    "maxSize": 6144000 
+  }
 }
