@@ -1,29 +1,30 @@
-'use client';
-
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-type Props = Readonly<{ children: React.ReactNode }>;
+type Props = Readonly<{
+  children: React.ReactNode;
+  redirectTo?: string;
+}>;
 
-const ProtectedRoute = ({ children }: Props) => {
-  const { isAuthenticated, isLoading } = useAuth();
+const ProtectedRoute = ({ children, redirectTo = '/auth/login' }: Props) => {
   const router = useRouter();
+  const [isReady, setIsReady] = useState(false);
+  const { isAuthenticated, isLoading } = useAuth();
 
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      router.push('/auth/login');
+    if (!isLoading) {
+      if (!isAuthenticated) {
+        router.push(redirectTo);
+      } else {
+        setIsReady(true);
+      }
     }
-  }, [isAuthenticated, isLoading, router]);
+  }, [isAuthenticated, isLoading, router, redirectTo]);
 
-  if (isLoading) {
+  if (isLoading || !isReady) {
     return <div>Loading...</div>;
   }
-
-  if (!isAuthenticated) {
-    return null;
-  }
-
   return <>{children}</>;
 };
 

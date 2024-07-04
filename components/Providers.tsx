@@ -11,7 +11,7 @@ export const Providers = ({
       <ThemeProvider
         enableSystem
         attribute="class"
-        defaultTheme="system"
+        defaultTheme="light"
         disableTransitionOnChange
       >
         {children}
