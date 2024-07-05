@@ -23,14 +23,13 @@ import {
 } from '@/components/ui/dialog';
 
 const formSchema = z.object({
-  amount: z.number().gte(1, { message: 'El monto minimo es de 1$.' }),
-  concept: z.string().min(1, { message: 'Concepto es requerido.' }),
-  date: z.string().min(1, { message: 'Fecha es requerida.' }),
+  name: z.string().min(1, { message: 'Concepto es requerido.' }),
+  role: z.string().min(1, { message: 'Fecha es requerida.' }),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
-export function RevenueForm() {
+export function UsersForm() {
   const [isOpen, setIsOpen] = useState(false);
 
   const form = useForm<FormValues>({
@@ -38,9 +37,8 @@ export function RevenueForm() {
     mode: 'onChange',
     reValidateMode: 'onChange',
     defaultValues: {
-      amount: 1,
-      concept: '',
-      date: '',
+      name: '',
+      role: '',
     },
   });
 
@@ -57,33 +55,26 @@ export function RevenueForm() {
   const handleOpenChange = (open: boolean) => setIsOpen(open);
   return (
     <>
-      <div className="flex justify-end py-4">
-        <Button onClick={handleOpenForm}>Nuevo Movimiento</Button>
-      </div>
       <Dialog open={isOpen} onOpenChange={handleOpenChange}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Nuevo Movimiento de Dinero</DialogTitle>
+            <DialogTitle>Nuevo Usuario</DialogTitle>
             <DialogDescription>
-              Completa los campos para agregar un nuevo movimiento.
+              Completa los campos para agregar un nuevo usuario.
             </DialogDescription>
           </DialogHeader>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FormField
                 control={form.control}
-                name="amount"
+                name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Monto</FormLabel>
+                    <FormLabel>Nombre</FormLabel>
                     <FormControl>
                       <Input
-                        type="number"
-                        placeholder="Ingrese el monto"
+                        placeholder="Ingrese el nombre del usuario"
                         {...field}
-                        onChange={(event) =>
-                          field.onChange(+event.target.value)
-                        }
                       />
                     </FormControl>
                     <FormMessage />
@@ -92,27 +83,13 @@ export function RevenueForm() {
               />
               <FormField
                 control={form.control}
-                name="concept"
+                name="role"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Concepto</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Ingrese el concepto" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Fecha</FormLabel>
+                    <FormLabel>Rol</FormLabel>
                     <FormControl>
                       <Input
-                        type="date"
-                        placeholder="Seleccione la fecha"
+                        placeholder="Ingrese el rol del usuario"
                         {...field}
                       />
                     </FormControl>
@@ -124,7 +101,7 @@ export function RevenueForm() {
                 <Button variant="outline" onClick={() => setIsOpen(false)}>
                   Salir
                 </Button>
-                <Button type="submit">Ingresar</Button>
+                <Button type="submit">Añadir</Button>
               </div>
             </form>
           </Form>

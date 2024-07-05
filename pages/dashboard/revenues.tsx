@@ -1,6 +1,5 @@
-import { RevenueForm } from '@/components/RevenueForm';
 import { TransactionTable } from '@/components/TransactionTable';
-import { Button } from '@/components/ui/button';
+import { RevenuesForm } from '@/components/RevenuesForm';
 import { transactionData } from '@/lib/transactions';
 
 const Reveneues = () => {
@@ -12,7 +11,7 @@ const Reveneues = () => {
       </h1>
 
       {/* Revenue and expenses form */}
-      <RevenueForm />
+      <RevenuesForm />
 
       {/*  Revenue and expenses table */}
       <div className="flex justify-center">
