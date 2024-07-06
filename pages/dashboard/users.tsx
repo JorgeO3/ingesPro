@@ -1,8 +1,15 @@
-import { userData } from '@/lib/users';
-import { UsersForm } from '@/components/UsersForm';
+import { UserForm } from '@/components/UsersForm';
 import { UsersTable } from '@/components/UsersTable';
+import { useUsers } from '@/hooks/useUsers';
+import { useEffect } from 'react';
 
 const Users = () => {
+  const { fetchUsers, users } = useUsers();
+
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
+
   return (
     <>
       {/* Title */}
@@ -11,13 +18,12 @@ const Users = () => {
       </h1>
 
       {/* Revenue and expenses form */}
-      {/* <RevenuesForm /> */}
-      <UsersForm />
+      <UserForm />
 
       {/*  Revenue and expenses table */}
       <div className="flex justify-center">
         <div className="w-full">
-          <UsersTable data={userData} />
+          <UsersTable data={users} />
         </div>
       </div>
 

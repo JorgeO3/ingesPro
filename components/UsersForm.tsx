@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -21,92 +20,96 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
+import { useUsers } from '@/hooks/useUsers';
 
-const formSchema = z.object({
-  name: z.string().min(1, { message: 'Concepto es requerido.' }),
-  role: z.string().min(1, { message: 'Fecha es requerida.' }),
+const userFormSchema = z.object({
+  userName: z.string().min(1, { message: 'El nombre es requerido.' }),
+  userRole: z.string().min(1, { message: 'El rol es requerido.' }),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+type UserFormValues = z.infer<typeof userFormSchema>;
 
-export function UsersForm() {
-  const [isOpen, setIsOpen] = useState(false);
+export function UserForm() {
+  const { isFormOpen, toggleForm } = useUsers();
 
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<UserFormValues>({
+    resolver: zodResolver(userFormSchema),
     mode: 'onChange',
-    reValidateMode: 'onChange',
     defaultValues: {
-      name: '',
-      role: '',
+      userName: '',
+      userRole: '',
     },
   });
 
-  const onSubmit = (values: FormValues) => {
+  const handleSubmit = (values: UserFormValues) => {
     console.log(values);
-    setIsOpen(false);
+    toggleFormAndReset();
   };
 
-  const handleOpenForm = () => {
-    setIsOpen(true);
+  const toggleFormAndReset = () => {
+    toggleForm();
     form.reset();
   };
 
-  const handleOpenChange = (open: boolean) => setIsOpen(open);
   return (
-    <>
-      <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Nuevo Usuario</DialogTitle>
-            <DialogDescription>
-              Completa los campos para agregar un nuevo usuario.
-            </DialogDescription>
-          </DialogHeader>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nombre</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Ingrese el nombre del usuario"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="role"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Rol</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Ingrese el rol del usuario"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div className="flex justify-end space-x-2">
-                <Button variant="outline" onClick={() => setIsOpen(false)}>
-                  Salir
-                </Button>
-                <Button type="submit">Añadir</Button>
-              </div>
-            </form>
-          </Form>
-        </DialogContent>
-      </Dialog>
-    </>
+    <Dialog open={isFormOpen} onOpenChange={toggleFormAndReset}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Nuevo Usuario</DialogTitle>
+          <DialogDescription>
+            Completa los campos para agregar un nuevo usuario.
+          </DialogDescription>
+        </DialogHeader>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-4"
+          >
+            <FormField
+              control={form.control}
+              name="userName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nombre</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Ingrese el nombre del usuario"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="userRole"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Rol</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Ingrese el rol del usuario"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex justify-end space-x-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={toggleFormAndReset}
+              >
+                Cancelar
+              </Button>
+              <Button type="submit">Agregar</Button>
+            </div>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
   );
 }

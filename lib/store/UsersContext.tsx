@@ -11,12 +11,14 @@ interface UsersState {
   users: User[];
   loading: boolean;
   error: string | null;
+  isFormOpen: boolean;
 }
 
 const INITIAL_STATE: UsersState = {
   users: [],
   loading: false,
   error: null,
+  isFormOpen: false,
 };
 
 type UsersAction =
@@ -25,7 +27,8 @@ type UsersAction =
   | { type: 'SET_USERS'; payload: User[] }
   | { type: 'DELETE_USER'; payload: number }
   | { type: 'SET_LOADING'; payload: boolean }
-  | { type: 'SET_ERROR'; payload: string | null };
+  | { type: 'SET_ERROR'; payload: string | null }
+  | { type: 'TOGGLE_FORM' };
 
 interface UsersContextType {
   state: UsersState;
@@ -47,6 +50,8 @@ function usersReducer(state: UsersState, action: UsersAction): UsersState {
       return { ...state, loading: action.payload };
     case 'SET_ERROR':
       return { ...state, error: action.payload };
+    case 'TOGGLE_FORM':
+      return { ...state, isFormOpen: !state.isFormOpen };
     default:
       return state;
   }

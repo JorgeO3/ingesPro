@@ -1,11 +1,12 @@
+import { UsersProvider } from '@/lib/store/UsersContext';
 import { SessionProvider } from 'next-auth/react';
 import { ThemeProvider } from 'next-themes';
 
-export const Providers = ({
-  children,
-}: Readonly<{
+interface ProvidersProps {
   children: React.ReactNode;
-}>) => {
+}
+
+export const Providers = ({ children }: ProvidersProps) => {
   return (
     <SessionProvider>
       <ThemeProvider
@@ -14,7 +15,7 @@ export const Providers = ({
         defaultTheme="light"
         disableTransitionOnChange
       >
-        {children}
+        <UsersProvider>{children}</UsersProvider>
       </ThemeProvider>
     </SessionProvider>
   );

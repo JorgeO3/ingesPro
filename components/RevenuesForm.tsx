@@ -58,14 +58,14 @@ export function RevenuesForm() {
   return (
     <>
       <div className="flex justify-end py-4">
-        <Button onClick={handleOpenForm}>Nuevo Movimiento</Button>
+        <Button onClick={handleOpenForm}>New Transaction</Button>
       </div>
       <Dialog open={isOpen} onOpenChange={handleOpenChange}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Nuevo Movimiento de Dinero</DialogTitle>
+            <DialogTitle>New Money Transaction</DialogTitle>
             <DialogDescription>
-              Completa los campos para agregar un nuevo movimiento.
+              Complete the fields to add a new movement.
             </DialogDescription>
           </DialogHeader>
           <Form {...form}>
@@ -75,7 +75,7 @@ export function RevenuesForm() {
                 name="amount"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Monto</FormLabel>
+                    <FormLabel>Amount</FormLabel>
                     <FormControl>
                       <Input
                         type="number"

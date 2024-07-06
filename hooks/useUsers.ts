@@ -1,4 +1,5 @@
 import { useUsersContext } from '@/lib/store/UsersContext';
+import { userData } from '@/lib/users';
 import { useCallback } from 'react';
 
 interface User {
@@ -17,7 +18,7 @@ interface UserInput {
 const BASE_URL = 'https://jsonplaceholder.typicode.com/users';
 
 // biome-ignore format: off
-const useUsers = () => {
+export const useUsers = () => {
   const { state, dispatch } = useUsersContext();
 
   const setLoading = useCallback((isLoading: boolean) => 
@@ -39,9 +40,9 @@ const useUsers = () => {
 
   const fetchUsers = useCallback(() => {
     return handleApiCall(async () => {
-      const response = await fetch(BASE_URL);
-      const users = await response.json();
-      dispatch({ type: 'SET_USERS', payload: users });
+      // const response = await fetch(BASE_URL);
+      // const users = await response.json();
+      dispatch({ type: 'SET_USERS', payload: userData });
     });
   }, [dispatch, handleApiCall]);
 
@@ -57,13 +58,17 @@ const useUsers = () => {
     });
   }, [dispatch, handleApiCall]);
 
+  const toggleForm = useCallback(() => {
+    dispatch({ type: 'TOGGLE_FORM' });
+  } , [dispatch]);
+
   return {
     loading: state.loading,
     users: state.users,
     error: state.error,
+    isFormOpen: state.isFormOpen,
     fetchUsers,
     updateUser,
+    toggleForm,
   };
 };
-
-export { useUsers };
