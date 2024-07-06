@@ -10,6 +10,7 @@
     "seed": "node ./prisma/seed.ts"
   },
   "dependencies": {
+    "@apollo/client": "^3.10.8",
     "@apollo/server": "^4.10.4",
     "@as-integrations/next": "^3.0.0",
     "@hookform/resolvers": "^3.7.0",
