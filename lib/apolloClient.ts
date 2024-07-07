@@ -13,8 +13,8 @@ import { setContext } from '@apollo/client/link/context';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
-function createApolloClient(session: Session | null) {
-  const errorLink = onError(({ graphQLErrors, networkError }) => {
+const createErrorLink = () =>
+  onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors) {
       for (const { message, locations, path } of graphQLErrors) {
         console.log(
@@ -25,34 +25,37 @@ function createApolloClient(session: Session | null) {
     if (networkError) console.log(`[Network error]: ${networkError}`);
   });
 
-  const httpLink = new HttpLink({
-    uri: 'http://localhost:3000/api/graphql',
-  });
+const createHttpLink = () =>
+  new HttpLink({ uri: process.env.NEXT_PUBLIC_GRAPHQL_API_URL });
 
-  const authLink = setContext((_, { headers }) => {
-    return {
-      headers: {
-        ...headers,
-        authorization: session?.user ? `Bearer ${session.user.id}` : '',
-      },
-    };
-  });
+const createAuthLink = (session: Session | null) =>
+  setContext((_, { headers }) => ({
+    headers: {
+      ...headers,
+      authorization: session?.accessToken
+        ? `Bearer ${session.accessToken}`
+        : '',
+    },
+  }));
 
+const createApolloClient = (session: Session | null) => {
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
-    link: from([errorLink, authLink, httpLink]),
+    link: from([createErrorLink(), createAuthLink(session), createHttpLink()]),
     cache: new InMemoryCache(),
     defaultOptions: {
-      watchQuery: {
-        fetchPolicy: 'cache-and-network',
-      },
+      watchQuery: { fetchPolicy: 'cache-and-network' },
     },
   });
+};
+
+interface InitializeApolloOptions {
+  initialState: NormalizedCacheObject | null;
+  session: Session | null;
 }
 
 // biome-ignore format: off
-// biome-ignore lint/style/useDefaultParameterLast: <explanation>
-export function initializeApollo(initialState: NormalizedCacheObject | null = null, session: Session | null) {
+export const initializeApollo = ({initialState, session}: InitializeApolloOptions) => {
   const _apolloClient = apolloClient ?? createApolloClient(session);
 
   if (initialState) {
@@ -61,17 +64,13 @@ export function initializeApollo(initialState: NormalizedCacheObject | null = nu
   }
 
   if (typeof window === 'undefined') return _apolloClient;
-
   if (!apolloClient) apolloClient = _apolloClient;
 
   return _apolloClient;
-}
+};
 
-export function useApollo(initialState: NormalizedCacheObject | null = null) {
+// biome-ignore format: off
+export const useApollo = (initialState: NormalizedCacheObject | null = null) => {
   const { data: session } = useSession();
-  const store = useMemo(
-    () => initializeApollo(initialState, session),
-    [initialState, session],
-  );
-  return store;
-}
+  return useMemo(() => initializeApollo({initialState, session}), [initialState, session]);
+};

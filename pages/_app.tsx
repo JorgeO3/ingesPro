@@ -1,15 +1,20 @@
-import { Providers } from '@/components/Providers';
-import { RootLayout } from '@/components/RootLayout';
+import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
-import { getLayout } from '@/lib/utils';
 import '@/styles/globals.css';
 
-export default function App({ Component, pageProps }: AppProps) {
+import { RootLayout } from '@/components/RootLayout';
+import { Providers } from '@/components/Providers';
+import { getLayout } from '@/lib/utils';
+
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps) {
   const { pathname } = useRouter();
   const CurrentLayout = getLayout(pathname);
   return (
-    <Providers>
+    <Providers session={session}>
       <RootLayout>
         <CurrentLayout>
           <Component {...pageProps} />

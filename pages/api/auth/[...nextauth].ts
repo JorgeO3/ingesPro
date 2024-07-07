@@ -15,8 +15,13 @@ export default NextAuth({
   ],
   adapter: PrismaAdapter(prisma),
   callbacks: {
+    async jwt({ token, account }) {
+      if (account) token.accessToken = account.access_token;
+      return token;
+    },
     async session({ session, token, user }) {
       session.user = user;
+      session.accessToken = token.accessToken as string;
       return session;
     },
   },
