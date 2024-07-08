@@ -30,6 +30,7 @@ const isOwnerOrAdmin = (context: MyContext, ownerId?: string): boolean =>
 
 const checkAuthorization = (authorized: boolean): void => {
   if (!authorized) {
+    console.error('Not authorized!', authorized);
     throw new GraphQLError('Not authorized!', {
       extensions: { code: 'FORBIDDEN' },
     });

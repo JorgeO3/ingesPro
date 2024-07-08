@@ -1,6 +1,8 @@
 import { useUsersContext } from '@/lib/store/UsersContext';
-import { userData } from '@/lib/users';
-import { useCallback } from 'react';
+import { UPDATE_USER } from '@/lib/graphql/mutations';
+import { useMutation, useQuery } from '@apollo/client';
+import { GET_USERS } from '@/lib/graphql/queries';
+import { useEffect } from 'react';
 
 interface User {
   id: number;
@@ -9,66 +11,63 @@ interface User {
   phone: string;
 }
 
-interface UserInput {
-  name: string;
-  email: string;
-  phone: string;
-}
-
-const BASE_URL = 'https://jsonplaceholder.typicode.com/users';
-
-// biome-ignore format: off
 export const useUsers = () => {
   const { state, dispatch } = useUsersContext();
 
-  const setLoading = useCallback((isLoading: boolean) => 
-    dispatch({ type: 'SET_LOADING', payload: isLoading }), [dispatch]);
+  const {
+    data: usersData,
+    loading: usersLoading,
+    error: usersError,
+  } = useQuery(GET_USERS, {
+    onCompleted: (data) => {
+      dispatch({ type: 'SET_USERS', payload: data.users });
+    },
+  });
 
-  const setError = useCallback((error: string) => 
-    dispatch({ type: 'SET_ERROR', payload: error }), [dispatch]);
+  console.log({ usersData, usersLoading, usersError });
 
-  const handleApiCall = useCallback(async (apiCall: () => Promise<void>) => {
-    setLoading(true);
-    try {
-      await apiCall();
-    } catch (error) {
-      setError((error as Error).message);
-    } finally {
-      setLoading(false);
+  const [updateUser] = useMutation(UPDATE_USER);
+
+  useEffect(() => {
+    if (usersData?.users) {
+      dispatch({ type: 'SET_USERS', payload: usersData.users });
     }
-  }, [setLoading, setError]);
+  }, [usersData, dispatch]);
 
-  const fetchUsers = useCallback(() => {
-    return handleApiCall(async () => {
-      // const response = await fetch(BASE_URL);
-      // const users = await response.json();
-      dispatch({ type: 'SET_USERS', payload: userData });
-    });
-  }, [dispatch, handleApiCall]);
+  useEffect(() => {
+    dispatch({ type: 'SET_LOADING', payload: usersLoading });
+  }, [usersLoading, dispatch]);
 
-  const updateUser = useCallback((updatedUser: User) => {
-    return handleApiCall(async () => {
-      const url = `${BASE_URL}/${updatedUser.id}`;
-      const body = JSON.stringify(updatedUser);
-      const headers = {
-        'Content-type': 'application/json; charset=UTF-8',
-      };
-      await fetch(url, { method: 'PUT', body, headers });
-      dispatch({ type: 'UPDATE_USER', payload: updatedUser });
-    });
-  }, [dispatch, handleApiCall]);
+  useEffect(() => {
+    usersError
+      ? dispatch({ type: 'SET_ERROR', payload: usersError.message })
+      : dispatch({ type: 'SET_ERROR', payload: null });
+  }, [usersError, dispatch]);
 
-  const toggleForm = useCallback(() => {
+  const handleUpdateUser = async (user: User) => {
+    dispatch({ type: 'SET_LOADING', payload: true });
+    try {
+      const { data } = await updateUser({ variables: user });
+      dispatch({ type: 'UPDATE_USER', payload: data.updateUser });
+      return data.updateUser;
+    } catch (error) {
+      dispatch({ type: 'SET_ERROR', payload: `Error updating user: ${error}` });
+      throw error;
+    } finally {
+      dispatch({ type: 'SET_LOADING', payload: false });
+    }
+  };
+
+  const toggleForm = () => {
     dispatch({ type: 'TOGGLE_FORM' });
-  } , [dispatch]);
+  };
 
   return {
-    loading: state.loading,
     users: state.users,
+    loading: state.loading,
     error: state.error,
     isFormOpen: state.isFormOpen,
-    fetchUsers,
-    updateUser,
+    updateUser: handleUpdateUser,
     toggleForm,
   };
 };

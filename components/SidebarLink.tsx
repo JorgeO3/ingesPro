@@ -25,7 +25,7 @@ export const SidebarLink = ({
 
   const linkClasses = `
     flex items-center rounded-md h-10
-    ${isActive ? 'bg-primary text-primary-foreground' : 'bg-card text-card-foreground'}
+    ${isActive ? 'bg-primary text-primary-foreground dark:text-secondary-foreground' : 'bg-card text-card-foreground'}
     hover:bg-accent hover:text-accent-foreground transition-colors duration-200
     justify-start
   `;

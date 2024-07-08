@@ -55,7 +55,7 @@ interface InitializeApolloOptions {
 }
 
 // biome-ignore format: off
-export const initializeApollo = ({initialState, session}: InitializeApolloOptions) => {
+export const initializeApollo = ({ initialState, session }: InitializeApolloOptions) => {
   const _apolloClient = apolloClient ?? createApolloClient(session);
 
   if (initialState) {
@@ -72,5 +72,6 @@ export const initializeApollo = ({initialState, session}: InitializeApolloOption
 // biome-ignore format: off
 export const useApollo = (initialState: NormalizedCacheObject | null = null) => {
   const { data: session } = useSession();
+  console.log('session apollo', session?.accessToken);
   return useMemo(() => initializeApollo({initialState, session}), [initialState, session]);
 };

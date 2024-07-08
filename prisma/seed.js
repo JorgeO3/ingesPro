@@ -1,27 +1,70 @@
-const { PrismaClient, Role } = require('@prisma/client');
+const { PrismaClient } = require('@prisma/client');
 const { faker } = require('@faker-js/faker');
+const bcrypt = require('bcryptjs');
 
 const prisma = new PrismaClient();
 
-// Configuración para controlar la cantidad de registros
+const arrAreaCodes = [
+  '300',
+  '301',
+  '302',
+  '303',
+  '304',
+  '305',
+  '310',
+  '311',
+  '312',
+  '313',
+  '314',
+  '315',
+  '316',
+  '317',
+  '318',
+  '320',
+  '321',
+  '322',
+  '323',
+  '350',
+  '351',
+];
+
+// Cantidad de registros
 const NUM_USERS = 1000;
 const MIN_TRANSACTIONS = 1;
 const MAX_TRANSACTIONS = 20;
 
+// Función para generar números de teléfono colombianos
+const generateColombianPhoneNumber = () => {
+  const areaCode = faker.helpers.arrayElement(arrAreaCodes);
+  const part1 = faker.number.int({ min: 100, max: 999 }).toString();
+  const part2 = faker.number.int({ min: 1000, max: 9999 }).toString();
+  return `${areaCode} ${part1} ${part2}`;
+};
+
+// Función para hash de contraseñas
+const hashPassword = async (password) => {
+  const salt = await bcrypt.genSalt(10);
+  return await bcrypt.hash(password, salt);
+};
+
 async function main() {
   // Generar usuarios
-  const users = Array.from({ length: NUM_USERS }, () => ({
-    id: faker.string.uuid(),
-    name: faker.person.fullName(),
-    email: faker.internet.email(),
-    emailVerified: faker.datatype.boolean() ? faker.date.recent() : null,
-    image: faker.image.avatar(),
-    role: faker.helpers.arrayElement([Role.USER, Role.ADMIN]),
-    createdAt: faker.date.past(),
-    updatedAt: faker.date.recent(),
-  }));
+  const users = await Promise.all(
+    Array.from({ length: NUM_USERS }, async () => ({
+      id: faker.string.uuid(),
+      name: faker.person.fullName(),
+      email: faker.internet.email(),
+      emailVerified: faker.datatype.boolean() ? faker.date.recent() : null,
+      image: faker.image.avatar(),
+      phone: generateColombianPhoneNumber(),
+      role: faker.helpers.arrayElement(['USER', 'ADMIN']),
+      password: await hashPassword(faker.internet.password()),
+      createdAt: faker.date.past(),
+      updatedAt: faker.date.recent(),
+    })),
+  );
 
-  // Crear usuarios en una sola consulta
+  // Insertar todos los usuarios
   await prisma.user.createMany({
     data: users,
   });

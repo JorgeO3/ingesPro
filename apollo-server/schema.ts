@@ -1,5 +1,5 @@
-import typeDefs from '@/graphql/typeDefs';
-import resolvers from '@/graphql/resolvers';
+import typeDefs from '@/apollo-server/typeDefs';
+import resolvers from '@/apollo-server/resolvers';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 
 const schema = makeExecutableSchema({

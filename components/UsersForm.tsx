@@ -52,64 +52,69 @@ export function UserForm() {
   };
 
   return (
-    <Dialog open={isFormOpen} onOpenChange={toggleFormAndReset}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Nuevo Usuario</DialogTitle>
-          <DialogDescription>
-            Completa los campos para agregar un nuevo usuario.
-          </DialogDescription>
-        </DialogHeader>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-4"
-          >
-            <FormField
-              control={form.control}
-              name="userName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nombre</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Ingrese el nombre del usuario"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="userRole"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Rol</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Ingrese el rol del usuario"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex justify-end space-x-2">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={toggleFormAndReset}
-              >
-                Cancelar
-              </Button>
-              <Button type="submit">Agregar</Button>
-            </div>
-          </form>
-        </Form>
-      </DialogContent>
-    </Dialog>
+    <>
+      <div className="flex justify-end py-4">
+        <Button className="dark:text-secondary-foreground">New User</Button>
+      </div>
+      <Dialog open={isFormOpen} onOpenChange={toggleFormAndReset}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Nuevo Usuario</DialogTitle>
+            <DialogDescription>
+              Completa los campos para agregar un nuevo usuario.
+            </DialogDescription>
+          </DialogHeader>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(handleSubmit)}
+              className="space-y-4"
+            >
+              <FormField
+                control={form.control}
+                name="userName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nombre</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Ingrese el nombre del usuario"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="userRole"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Rol</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Ingrese el rol del usuario"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex justify-end space-x-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={toggleFormAndReset}
+                >
+                  Cancelar
+                </Button>
+                <Button type="submit">Agregar</Button>
+              </div>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

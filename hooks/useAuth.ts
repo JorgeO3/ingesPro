@@ -13,7 +13,6 @@ export const useAuth = () => {
       redirect: false,
       ...credentials,
     });
-    console.log(result);
   };
 
   const logout = () => {

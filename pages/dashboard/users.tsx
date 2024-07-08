@@ -1,15 +1,12 @@
 import { UserForm } from '@/components/UsersForm';
 import { UsersTable } from '@/components/UsersTable';
 import { useUsers } from '@/hooks/useUsers';
-import { useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 
 const Users = () => {
-  const { fetchUsers, users } = useUsers();
-
-  useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
-
+  const { users } = useUsers();
+  const session = useSession();
+  console.log({ session });
   return (
     <>
       {/* Title */}

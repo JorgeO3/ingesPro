@@ -1,8 +1,9 @@
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
 import { ApolloServer } from '@apollo/server';
-import { getSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth';
 import type { Session } from 'next-auth';
-import schema from '@/graphql/schema';
+import schema from '@/apollo-server/schema';
+import { authOptions } from './auth/[...nextauth]';
 
 interface MyContext {
   user?: {
@@ -16,8 +17,15 @@ const server = new ApolloServer<MyContext>({
 });
 
 export default startServerAndCreateNextHandler(server, {
-  context: async (req): Promise<MyContext> => {
-    const session: Session | null = await getSession({ req });
+  context: async (req, res): Promise<MyContext> => {
+    const session: Session | null = await getServerSession(
+      req,
+      res,
+      authOptions,
+    );
+
+    console.log('session graph', session);
+
     return {
       user: session?.user
         ? { id: session.user.id, role: session.user.role }

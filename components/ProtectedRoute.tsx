@@ -8,23 +8,23 @@ type Props = Readonly<{
 }>;
 
 const ProtectedRoute = ({ children, redirectTo = '/auth/login' }: Props) => {
-  // const router = useRouter();
-  // const [isReady, setIsReady] = useState(false);
-  // const { isAuthenticated, isLoading } = useAuth();
+  const router = useRouter();
+  const [isReady, setIsReady] = useState(false);
+  const { isAuthenticated, isLoading } = useAuth();
 
-  // useEffect(() => {
-  //   if (!isLoading) {
-  //     if (!isAuthenticated) {
-  //       router.push(redirectTo);
-  //     } else {
-  //       setIsReady(true);
-  //     }
-  //   }
-  // }, [isAuthenticated, isLoading, router, redirectTo]);
+  useEffect(() => {
+    if (!isLoading) {
+      if (!isAuthenticated) {
+        router.push(redirectTo);
+      } else {
+        setIsReady(true);
+      }
+    }
+  }, [isAuthenticated, isLoading, router, redirectTo]);
 
-  // if (isLoading || !isReady) {
-  //   return <div>Loading...</div>;
-  // }
+  if (isLoading || !isReady) {
+    return <div>Loading...</div>;
+  }
   return <>{children}</>;
 };
 

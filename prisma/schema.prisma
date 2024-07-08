@@ -19,6 +19,8 @@ model User {
   emailVerified DateTime?
   image         String?
   role          Role            @default(USER)
+  phone         String?
+  password      String?
   accounts      Account[]
   sessions      Session[]
   // Optional for WebAuthn support

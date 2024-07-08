@@ -1,5 +1,11 @@
+import { ExpenseRevenueChart } from '@/components/ReportChart';
+
 const Reports = () => {
-  return <div>Reports</div>;
+  return (
+    <div>
+      <ExpenseRevenueChart />
+    </div>
+  );
 };
 
 export default Reports;

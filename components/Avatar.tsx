@@ -25,7 +25,7 @@ export const Avatar = ({
           className="rounded-full object-cover w-full h-full"
         />
       ) : (
-        <UserIcon className="w-3/5 h-3/5 text-primary-foreground" />
+        <UserIcon className="w-3/5 h-3/5 text-secondary-foreground" />
       )}
     </div>
   );
