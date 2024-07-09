@@ -54,7 +54,9 @@ export function UserForm() {
   return (
     <>
       <div className="flex justify-end py-4">
-        <Button className="dark:text-secondary-foreground">New User</Button>
+        <Button disabled className="dark:text-secondary-foreground">
+          New User
+        </Button>
       </div>
       <Dialog open={isFormOpen} onOpenChange={toggleFormAndReset}>
         <DialogContent>

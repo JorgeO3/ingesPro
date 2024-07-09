@@ -1,12 +1,7 @@
 import { UserForm } from '@/components/UsersForm';
 import { UsersTable } from '@/components/UsersTable';
-import { useUsers } from '@/hooks/useUsers';
-import { useSession } from 'next-auth/react';
 
 const Users = () => {
-  const { users } = useUsers();
-  const session = useSession();
-  console.log({ session });
   return (
     <>
       {/* Title */}
@@ -20,16 +15,8 @@ const Users = () => {
       {/*  Revenue and expenses table */}
       <div className="flex justify-center">
         <div className="w-full">
-          <UsersTable data={users} />
+          <UsersTable />
         </div>
-      </div>
-
-      {/* Total */}
-      <div className="text-right">
-        <span className="text-lg font-medium text-muted-foreground">
-          Total:{' '}
-        </span>
-        <span className="text-lg font-bold text-foreground">$45.000.000</span>
       </div>
     </>
   );

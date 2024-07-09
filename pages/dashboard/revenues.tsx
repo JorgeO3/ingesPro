@@ -20,11 +20,14 @@ const Reveneues = () => {
         </div>
       </div>
 
-      {/* Total */}
-      <div className="text-right flex text-base">
-        <span className="text-lg font-medium text-muted-foreground">Total</span>
-        <br />
-        <span className="text-lg font-bold text-foreground">$45.000.000</span>
+      <div className="flex justify-end">
+        <div>
+          <span>Total</span>
+          <br />
+          <span className="text-2xl font-semibold leading-none tracking-tight">
+            $45.000.000
+          </span>
+        </div>
       </div>
     </>
   );

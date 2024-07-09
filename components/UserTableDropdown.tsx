@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from './ui/button';
 import { MoreHorizontal } from 'lucide-react';
 import {

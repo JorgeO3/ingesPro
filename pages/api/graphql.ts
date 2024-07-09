@@ -24,8 +24,6 @@ export default startServerAndCreateNextHandler(server, {
       authOptions,
     );
 
-    console.log('session graph', session);
-
     return {
       user: session?.user
         ? { id: session.user.id, role: session.user.role }

@@ -122,6 +122,15 @@ const resolvers = {
       },
     ),
 
+    usersCount: async (
+      _: unknown,
+      __: unknown,
+      context: MyContext,
+    ): Promise<number> => {
+      checkAuthorization(isAdmin(context));
+      return prisma.user.count();
+    },
+
     user: async (
       _: unknown,
       { id }: { id: string },

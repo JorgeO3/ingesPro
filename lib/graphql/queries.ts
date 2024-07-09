@@ -1,4 +1,3 @@
-// queries.ts
 import { gql } from '@apollo/client';
 
 const GET_USERS = gql`
@@ -9,6 +8,7 @@ const GET_USERS = gql`
       email
       role
     }
+    usersCount
   }
 `;
 

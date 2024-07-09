@@ -58,7 +58,12 @@ export function RevenuesForm() {
   return (
     <>
       <div className="flex justify-end py-4">
-        <Button onClick={handleOpenForm}>New Transaction</Button>
+        <Button
+          className="dark:text-secondary-foreground"
+          onClick={handleOpenForm}
+        >
+          New Transaction
+        </Button>
       </div>
       <Dialog open={isOpen} onOpenChange={handleOpenChange}>
         <DialogContent>

@@ -1,46 +1,51 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   useReactTable,
   getCoreRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
   getFilteredRowModel,
   type SortingState,
   type ColumnFiltersState,
   type VisibilityState,
   type PaginationState,
+  type OnChangeFn,
 } from '@tanstack/react-table';
-import { columns } from '@/components/UserTableColumns';
+import { columns as rawColumns } from '@/components/UserTableColumns';
 import type { User } from '@/lib/users';
 
-export const useUserTable = (data: User[]) => {
+interface UseUserTableProps {
+  data: User[];
+  pagination: PaginationState;
+  setPagination: OnChangeFn<PaginationState>;
+  rowCount: number;
+}
+
+export const useUserTable = (props: UseUserTableProps) => {
+  const { data, pagination, setPagination, rowCount } = props;
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = useState({});
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 5,
-  });
+
+  const columns = useMemo(() => rawColumns, []);
 
   return useReactTable({
     data,
     columns,
+    rowCount,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
-      rowSelection,
       pagination,
     },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onPaginationChange: setPagination,
+    manualPagination: true,
+    autoResetPageIndex: false,
   });
 };

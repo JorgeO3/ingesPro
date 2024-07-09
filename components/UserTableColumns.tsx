@@ -1,3 +1,5 @@
+'use client';
+
 import type { User } from '@/lib/users';
 import { Checkbox } from './ui/checkbox';
 import type { ColumnDef, Row, Table } from '@tanstack/react-table';
@@ -27,13 +29,6 @@ const getSelectCell = (row: Row<User>) => (
 );
 
 export const columns: ColumnDef<User>[] = [
-  {
-    id: 'select',
-    header: ({ table }) => selectHeader(table),
-    cell: ({ row }) => getSelectCell(row),
-    enableSorting: false,
-    enableHiding: false,
-  },
   {
     accessorKey: 'id',
     header: () => <div className="text-center">ID</div>,

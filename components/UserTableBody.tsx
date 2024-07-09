@@ -1,3 +1,5 @@
+'use client';
+
 import { TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { type Table, flexRender } from '@tanstack/react-table';
 import type { User } from '@/lib/users';

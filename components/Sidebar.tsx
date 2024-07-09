@@ -1,14 +1,17 @@
 'use client';
 
 import { Links } from '@/lib/links';
-import { Avatar } from '@/components/Avatar';
 import { useSidebar } from '@/hooks/useSidebar';
 import { SidebarLink } from '@/components/SidebarLink';
+import { LogoutButton } from '@/components/LogoutButton';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { CollapseButton } from '@/components/CollapseButton';
+import { signOut } from 'next-auth/react';
 
 export const SideBar = () => {
   const { isCollapsed, showContent, toggleCollapse } = useSidebar();
+  const handleLogout = () => signOut();
+
   const sidebarClasses = `
     group h-screen sticky top-0 bg-background text-white p-4 box-border 
     flex flex-col justify-between transition-all duration-300
@@ -33,7 +36,7 @@ export const SideBar = () => {
           ))}
         </TooltipProvider>
       </div>
-      <Avatar />
+      <LogoutButton logOut={handleLogout} />
     </div>
   );
 };

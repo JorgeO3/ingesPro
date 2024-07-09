@@ -1,24 +1,8 @@
-import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
-
 interface Props {
   className?: string;
 }
 
 export const Auth0Icon = ({ className }: Props) => {
-  const { theme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return null; // Evitar problemas de hidratación
-  }
-
-  const fillColor = theme === 'dark' ? '#ffffff' : '#000000';
-
   return (
     <div className={className}>
       <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 256 285">

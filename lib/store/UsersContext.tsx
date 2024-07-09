@@ -43,6 +43,7 @@ function usersReducer(state: UsersState, action: UsersAction): UsersState {
     case 'UPDATE_USER': 
       return { ...state, users: state.users.map((user) => user.id === action.payload.id ? action.payload : user)};
     case 'SET_USERS':
+      console.log('seteando los usuarios en', action.payload.length);
       return { ...state, users: action.payload };
     case 'DELETE_USER':
       return { ...state, users: state.users.filter((user) => user.id !== action.payload)};

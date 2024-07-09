@@ -30,6 +30,7 @@ const typeDefs = `#graphql
     user(id: String!): User
     transactions(page: Int, pageSize: Int): [Transaction]
     transaction(id: String!): Transaction
+    usersCount: Int!
   }
 
   type Mutation {
