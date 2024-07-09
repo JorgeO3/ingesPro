@@ -1,5 +1,3 @@
-'use client';
-
 import type { User } from '@/lib/users';
 import { Checkbox } from './ui/checkbox';
 import type { ColumnDef, Row, Table } from '@tanstack/react-table';

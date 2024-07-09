@@ -1,31 +1,26 @@
-'use client';
-
-import { useUsers } from '@/hooks/useUsers';
 import { Table } from '@/components/ui/table';
+import type { User } from '@/lib/users';
+import type {
+  ColumnDef,
+  OnChangeFn,
+  PaginationState,
+} from '@tanstack/react-table';
+
 import { useUserTable } from '@/hooks/useUserTable';
-import { UserTableBody } from '@/components/UserTableBody';
 import { UserTableHeader } from '@/components/UserTableHeader';
-import { UserTablePagination } from '@/components/UserTablePagination';
+import { UserTableBody } from './UserTableBody';
+import { UserTablePagination } from './UserTablePagination';
 
-export const UsersTable = () => {
-  const { error, loading, totalCount, users, pagination, onPaginationChange } =
-    useUsers();
+interface UsersTableProps {
+  data: User[];
+  pagination: PaginationState;
+  onPaginationChange: OnChangeFn<PaginationState>;
+  rowCount: number;
+  columns: ColumnDef<User>[];
+}
 
-  const table = useUserTable({
-    setPagination: onPaginationChange,
-    data: users,
-    pagination,
-    rowCount: totalCount,
-  });
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
-
+export const UsersTable = (props: UsersTableProps) => {
+  const table = useUserTable(props);
   return (
     <div className="flex flex-col">
       <div className="rounded-md border">

@@ -48,7 +48,7 @@ export const DebugTable = ({
       pagination,
     },
     manualPagination: true,
-    autoResetPageIndex: false, // turn off page index reset when sorting or filtering
+    autoResetPageIndex: false,
   });
 
   return (

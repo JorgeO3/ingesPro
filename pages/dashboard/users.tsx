@@ -1,21 +1,14 @@
-import { DebugTable } from '@/components/DebugTable';
 import { UserForm } from '@/components/UsersForm';
+import { UsersTable } from '@/components/UsersTable';
 import { useUsers } from '@/hooks/useUsers';
-import { makeData, type Person } from '@/lib/makeData';
+import type { User } from '@/lib/users';
 import type { ColumnDef } from '@tanstack/react-table';
-import React from 'react';
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-}
+import { useMemo } from 'react';
 
 const Users = () => {
-  const { error, loading, totalCount, users, pagination, onPaginationChange } =
-    useUsers();
-  const columns = React.useMemo<ColumnDef<User>[]>(
+  const { totalCount, users, pagination, onPaginationChange } = useUsers();
+
+  const columns = useMemo<ColumnDef<User>[]>(
     () => [
       {
         accessorKey: 'id',
@@ -40,7 +33,6 @@ const Users = () => {
     ],
     [],
   );
-
   return (
     <>
       {/* Title */}
@@ -54,12 +46,12 @@ const Users = () => {
       {/*  Revenue and expenses table */}
       <div className="flex justify-center">
         <div className="w-full">
-          <DebugTable
+          <UsersTable
             data={users}
-            columns={columns}
-            pagination={pagination}
             rowCount={totalCount}
+            pagination={pagination}
             onPaginationChange={onPaginationChange}
+            columns={columns}
           />
         </div>
       </div>
