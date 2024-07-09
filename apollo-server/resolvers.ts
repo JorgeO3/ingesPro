@@ -6,8 +6,7 @@ import {
 } from '@prisma/client';
 import { GraphQLError, type GraphQLResolveInfo } from 'graphql';
 import dateTimeScalar from '@/lib/dateTimeScalar';
-
-const prisma = new PrismaClient();
+import prisma from '@/lib/prisma';
 
 // Types
 export interface MyContext {

@@ -1,11 +1,9 @@
 import NextAuth, { type NextAuthOptions } from 'next-auth';
-import { PrismaClient } from '@prisma/client';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import Auth0Provider from 'next-auth/providers/auth0';
 import GoogleProvider from 'next-auth/providers/google';
 import GitHubProvider from 'next-auth/providers/github';
-
-const prisma = new PrismaClient();
+import prisma from '@/lib/prisma';
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -61,7 +59,6 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: 'jwt',
   },
-  debug: true,
 };
 
 export default NextAuth(authOptions);

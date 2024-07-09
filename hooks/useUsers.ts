@@ -123,6 +123,7 @@ export const useUsers = () => {
   const { state, dispatch } = useUsersContext();
   const [isLoading, setIsLoading] = useState(true);
   const [pagination, setPagination] = useState(initialPaginationState);
+  const [totalUsers, setTotalUsers] = useState(0);
 
   const { error, refetch, data } = useQuery(GET_USERS, {
     variables: {
@@ -131,6 +132,7 @@ export const useUsers = () => {
     },
     onCompleted: (data) => {
       dispatch({ type: 'SET_USERS', payload: data.users });
+      setTotalUsers(data.usersCount);
       setIsLoading(false);
     },
   });
@@ -167,7 +169,7 @@ export const useUsers = () => {
     toggleForm,
     updateUser: () => {},
     pagination,
-    totalCount: data?.usersCount ?? 10000,
+    totalCount: totalUsers,
     onPaginationChange: handlePaginationChange,
   };
 };
