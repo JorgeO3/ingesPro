@@ -1,12 +1,15 @@
+'use client';
+
 import { UserForm } from '@/components/UsersForm';
 import { UsersTable } from '@/components/UsersTable';
+import { UserTableDropdown } from '@/components/UserTableDropdown';
 import { useUsers } from '@/hooks/useUsers';
 import type { User } from '@/lib/users';
 import type { ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';
 
 const Users = () => {
-  const { totalCount, users, pagination, onPaginationChange } = useUsers();
+  const { rowCount, users, pagination, onPaginationChange } = useUsers();
 
   const columns = useMemo<ColumnDef<User>[]>(
     () => [
@@ -30,6 +33,12 @@ const Users = () => {
         cell: (info) => info.getValue(),
         footer: (props) => props.column.id,
       },
+      {
+        id: 'actions',
+        enableHiding: false,
+        // cell: ({ row }) => <UserTableDropdown2 id={row.original.id} />,
+        cell: ({ row }) => <UserTableDropdown id={row.original.id} />,
+      },
     ],
     [],
   );
@@ -48,7 +57,7 @@ const Users = () => {
         <div className="w-full">
           <UsersTable
             data={users}
-            rowCount={totalCount}
+            rowCount={rowCount}
             pagination={pagination}
             onPaginationChange={onPaginationChange}
             columns={columns}

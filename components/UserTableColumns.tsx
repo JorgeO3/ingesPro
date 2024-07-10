@@ -55,9 +55,9 @@ export const columns: ColumnDef<User>[] = [
       <div className="text-center">{String(info.getValue())}</div>
     ),
   },
-  {
-    id: 'actions',
-    enableHiding: false,
-    cell: ({ row }) => <UserTableDropdown record={row.original} />,
-  },
+  // {
+  //   id: 'actions',
+  //   enableHiding: false,
+  //   cell: ({ row }) => <UserTableDropdown user={row.original} />,
+  // },
 ];

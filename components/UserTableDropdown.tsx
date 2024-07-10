@@ -1,5 +1,3 @@
-'use client';
-
 import { Button } from './ui/button';
 import { MoreHorizontal } from 'lucide-react';
 import {
@@ -12,19 +10,14 @@ import {
 } from './ui/dropdown-menu';
 import { useUsers } from '@/hooks/useUsers';
 
-interface Record {
-  id: number;
+interface Props {
+  id: string;
 }
 
-interface Props<T extends Record> {
-  record: T;
-}
-
-export const UserTableDropdown = <T extends Record>({ record }: Props<T>) => {
+export const UserTableDropdown = ({ id }: Props) => {
   const { toggleForm } = useUsers();
-
   const handleClick = () => {
-    console.log('Edit record', record.id);
+    console.log('Edit record', id);
     toggleForm();
   };
   return (
